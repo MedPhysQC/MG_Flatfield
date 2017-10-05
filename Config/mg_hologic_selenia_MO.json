@@ -1,0 +1,26 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "header_series": {
+            "filters": {}, 
+            "params": {
+                "info": "qc"
+            }
+        }, 
+        "qc_series": {
+            "filters": {}, 
+            "params": {
+                "info": "qc"
+            }
+        }
+    }, 
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20160822", 
+        "description": "UMCU MG/QCMammoUniformity module for Hologic Selenia", 
+        "version": "20160413"
+    }
+}
