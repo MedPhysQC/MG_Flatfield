@@ -1,0 +1,30 @@
+{
+    "actions": {
+        "acqdatetime": {
+            "filters": {}, 
+            "params": {}
+        }, 
+        "header_series": {
+            "filters": {}, 
+            "params": {
+                "info": "qc"
+            }
+        }, 
+        "qc_series": {
+            "filters": {}, 
+            "params": {
+                "art_borderpx_lrtb": "0;0;0;0", 
+                "info": "qc"
+            }
+        }
+    }, 
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20180219", 
+        "description": "MG/Flatfield for Philips Microdose L50", 
+        "params": {
+            "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image"
+        }, 
+        "version": "20161219"
+    }
+}

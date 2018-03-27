@@ -13,14 +13,18 @@
         "qc_series": {
             "filters": {}, 
             "params": {
+                "art_borderpx_lrtb": "0;0;6;16", 
                 "info": "qc"
             }
         }
     }, 
     "comments": {
         "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20160822", 
-        "description": "UMCU MG/QCMammoUniformity module for Hologic Dimensions", 
-        "version": "20160413"
+        "creator": "generate_config_json.py version 20180219", 
+        "description": "MG/Flatfield for Hologic Affirm Prone", 
+        "params": {
+            "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image"
+        }, 
+        "version": "20160622"
     }
 }

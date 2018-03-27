@@ -1,0 +1,83 @@
+{
+    "comments": {
+        "author": "Arnold Schilham, UMCU", 
+        "creator": "generate_config_json.py version 20180219", 
+        "description": "MG/Flatfield for Hologic Affirm Prone"
+    }, 
+    "results": {
+        "AcquisitionDateTime": {
+            "constraint_period": 14, 
+            "description": "date and time of acquisition", 
+            "display_level": 2, 
+            "display_name": "DateTime", 
+            "units": ""
+        }, 
+        "ProtocolName": {
+            "constraint_equals": "PMMA 4,5 cm", 
+            "description": "protocol used", 
+            "display_level": 1, 
+            "display_name": "protocol", 
+            "units": ""
+        }, 
+        "art_clusters": {
+            "constraint_minlowhighmax": [
+                0, 
+                0, 
+                0, 
+                1
+            ], 
+            "description": "number of clusters of artefacts", 
+            "display_level": 2, 
+            "display_name": "artefacts", 
+            "units": ""
+        }, 
+        "doseratio": {
+            "constraint_minlowhighmax": [
+                0.9, 
+                0.95, 
+                1.05, 
+                1.1
+            ], 
+            "description": "ratio of calculated to agd dose", 
+            "display_level": 1, 
+            "display_name": "dose ratio", 
+            "units": ""
+        }, 
+        "expert_inoutoverin": {
+            "constraint_minlowhighmax": [
+                -0.2, 
+                -0.1, 
+                0.5, 
+                1.0
+            ], 
+            "description": "usable fraction of phantom over image", 
+            "display_level": 1, 
+            "display_name": "phantom fraction", 
+            "units": ""
+        }, 
+        "snr_hol": {
+            "constraint_minlowhighmax": [
+                80.0, 
+                81.0, 
+                99.0, 
+                100.0
+            ], 
+            "description": "mean to noise ratio in ROI in center chestside of phantom", 
+            "display_level": 2, 
+            "display_name": "SNR", 
+            "units": ""
+        }, 
+        "unif_pct": {
+            "constraint_minlowhighmax": [
+                0.0, 
+                0.0, 
+                7.5, 
+                10.0
+            ], 
+            "description": "Non-uniformity of phantom", 
+            "display_level": 2, 
+            "display_name": "Non-uniformity", 
+            "units": "%"
+        }
+    }
+}
