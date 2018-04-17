@@ -13,7 +13,7 @@
         "qc_series": {
             "filters": {}, 
             "params": {
-                "art_borderpx_lrtb": "0;0;6;16", 
+                "art_borderpx_lrtb": "0;0;16;16", 
                 "info": "qc"
             }
         }
@@ -25,6 +25,6 @@
         "params": {
             "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image"
         }, 
-        "version": "20160622"
+        "version": "20180417"
     }
 }
