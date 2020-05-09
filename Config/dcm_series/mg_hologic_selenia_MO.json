@@ -1,37 +1,37 @@
 {
     "actions": {
         "acqdatetime": {
-            "filters": {}, 
+            "filters": {},
             "params": {}
-        }, 
+        },
         "header_series": {
-            "filters": {}, 
+            "filters": {},
             "params": {
                 "info": "qc"
             }
-        }, 
+        },
         "qc_series": {
-            "filters": {}, 
+            "filters": {},
             "params": {
-                "art_borderpx_lrtb": "0;0;12;12", 
+                "art_borderpx_lrtb": "0;0;12;12",
                 "info": "qc"
             }
         }
-    }, 
-    "cfgformat": "20180910", 
+    },
+    "cfgformat": "20180910",
     "comments": {
-        "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
-        "description": "MG/Flatfield for Hologic Selenia", 
+        "author": "Arnold Schilham, UMCU",
+        "creator": "generate_config_json.py version 20180912",
+        "description": "MG/Flatfield for Hologic Selenia",
         "version": "20161219"
-    }, 
+    },
     "info": {
         "acqdatetime": {
             "params": {}
-        }, 
+        },
         "header_series": {
             "params": {}
-        }, 
+        },
         "qc_series": {
             "params": {
                 "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image"

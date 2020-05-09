@@ -1,90 +1,90 @@
 {
     "comments": {
-        "author": "Arnold Schilham, UMCU", 
-        "creator": "generate_config_json.py version 20180912", 
+        "author": "Arnold Schilham, UMCU",
+        "creator": "generate_config_json.py version 20180912",
         "description": "MG/Flatfield for Philips Microdose L50"
-    }, 
-    "metaformat": "20180910", 
+    },
+    "metaformat": "20180910",
     "results": {
         "AcquisitionDateTime": {
-            "constraint_period": 14, 
-            "description": "date and time of acquisition", 
-            "display_level": 2, 
-            "display_name": "DateTime", 
+            "constraint_period": 14,
+            "description": "date and time of acquisition",
+            "display_level": 2,
+            "display_name": "DateTime",
             "units": ""
-        }, 
+        },
         "BodyPartThickness": {
-            "constraint_equals": "42", 
-            "description": "compressed thickness", 
-            "display_level": 2, 
-            "display_name": "thickness", 
+            "constraint_equals": "42",
+            "description": "compressed thickness",
+            "display_level": 2,
+            "display_name": "thickness",
             "units": ""
-        }, 
+        },
         "art_clusters": {
             "constraint_minlowhighmax": [
-                0, 
-                0, 
-                0, 
+                0,
+                0,
+                0,
                 1
-            ], 
-            "description": "number of clusters of artefacts", 
-            "display_level": 2, 
-            "display_name": "artefacts", 
+            ],
+            "description": "number of clusters of artefacts",
+            "display_level": 2,
+            "display_name": "artefacts",
             "units": ""
-        }, 
+        },
         "doseratio": {
             "constraint_minlowhighmax": [
-                0.9, 
-                0.95, 
-                1.05, 
+                0.9,
+                0.95,
+                1.05,
                 1.1
-            ], 
-            "description": "ratio of calculated to agd dose", 
-            "display_level": 1, 
-            "display_name": "dose ratio", 
+            ],
+            "description": "ratio of calculated to agd dose",
+            "display_level": 1,
+            "display_name": "dose ratio",
             "units": ""
-        }, 
+        },
         "expert_inoutoverin": {
             "constraint_minlowhighmax": [
-                -0.2, 
-                -0.1, 
-                0.5, 
+                -0.2,
+                -0.1,
+                0.5,
                 1.0
-            ], 
-            "description": "usable fraction of phantom over image", 
-            "display_level": 1, 
-            "display_name": "phantom fraction", 
+            ],
+            "description": "usable fraction of phantom over image",
+            "display_level": 1,
+            "display_name": "phantom fraction",
             "units": ""
-        }, 
+        },
         "kVp": {
-            "constraint_equals": "32", 
-            "description": "tube voltage", 
-            "display_level": 2, 
-            "display_name": "kVp", 
+            "constraint_equals": "32",
+            "description": "tube voltage",
+            "display_level": 2,
+            "display_name": "kVp",
             "units": ""
-        }, 
+        },
         "snr_hol": {
             "constraint_minlowhighmax": [
-                19.12, 
-                21.51, 
-                26.29, 
+                19.12,
+                21.51,
+                26.29,
                 28.68
-            ], 
-            "description": "mean to noise ratio in ROI in center chestside of phantom", 
-            "display_level": 2, 
-            "display_name": "SNR", 
+            ],
+            "description": "mean to noise ratio in ROI in center chestside of phantom",
+            "display_level": 2,
+            "display_name": "SNR",
             "units": ""
-        }, 
+        },
         "unif_pct": {
             "constraint_minlowhighmax": [
-                -5.0, 
-                -2.5, 
-                2.5, 
+                -5.0,
+                -2.5,
+                2.5,
                 5.0
-            ], 
-            "description": "Non-uniformity of phantom", 
-            "display_level": 2, 
-            "display_name": "Non-uniformity", 
+            ],
+            "description": "Non-uniformity of phantom",
+            "display_level": 2,
+            "display_name": "Non-uniformity",
             "units": "%"
         }
     }

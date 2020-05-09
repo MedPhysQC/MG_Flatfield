@@ -20,6 +20,8 @@
 # 
 #
 # Changelog:
+#   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
+#   20200401: made some dicom values floats
 #   20190426: Fix for matplotlib>3
 #   20161220: added artefact border setting param; removed class variables; removed class variables
 #   20160802: sync with pywad1.0
@@ -27,9 +29,8 @@
 #   20160620: remove quantity and units
 #
 # ./QCMammo_wadwrapper.py -c Config/mg_hologic_selenia_series.json -d TestSet/StudySelenia -r results_selenia.json
-from __future__ import print_function
 
-__version__ = '20190426'
+__version__ = '20200508'
 __author__ = 'aschilham'
 
 import os
@@ -254,13 +255,29 @@ def header_series(data, results, action):
     _setRunParams(cs, params)
     
     dicominfo = qcmammolib.DICOMInfo(cs,info)
-
+    floatlist = [
+        "BodyPartThickness",
+        "CompressionForce",
+        "DistanceSourceToDetector",
+        "DistanceSourceToPatient",
+        "EntranceDose_(mGy)",
+        "HalfValueLayer_(mm)",
+        "OrganDose",
+        "kVp",
+        "muAs"
+    ]
     ## 2. Add results to 'result' object
     varname = 'pluginversion'
     results.addString(varname, str(qcmammolib.qcversion))
     for di in dicominfo:
         varname = di[0]
-        results.addString(varname, str(di[1])[:min(len(str(di[1])),100)])
+        if varname in floatlist:
+            try:
+                results.addFloat(varname, float(di[1]))
+            except:
+                results.addString(varname, str(di[1])[:min(len(str(di[1])),100)])
+        else:
+            results.addString(varname, str(di[1])[:min(len(str(di[1])),100)])
 
 if __name__ == "__main__":
     data, results, config = pyWADinput()
