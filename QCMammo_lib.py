@@ -605,7 +605,7 @@ class Mammo_QC:
         cs_mam.stdevs = []
         for r in cs_mam.unif_rois:
             arr = cs_mam.pixeldataIn[r[0]:(r[0]+r[1]),r[2]:(r[2]+r[3])]
-            cs_mam.means.append(np.mean(arr))
+            cs_mam.means.append(np.mean(arr)-cs_mam.dc_offset)
             cs_mam.stdevs.append(np.std(arr))
 
         maxdev = abs(cs_mam.means[0]-cs_mam.means[4])
@@ -613,7 +613,7 @@ class Mammo_QC:
             maxdev = max(maxdev,abs(cs_mam.means[i]-cs_mam.means[4]))
 
         cs_mam.unif_pct = 100.*maxdev/cs_mam.means[4]
-        cs_mam.snr_hol = (cs_mam.means[5]-cs_mam.dc_offset)/cs_mam.stdevs[5]
+        cs_mam.snr_hol = cs_mam.means[5]/cs_mam.stdevs[5]
         if cs_mam.verbose:
             print("[Uniformity] maxdev="+str(maxdev)+" unif="+str(cs_mam.unif_pct)+" snr="+str(cs_mam.snr_hol))
         error = False
