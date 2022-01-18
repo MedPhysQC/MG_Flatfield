@@ -16,6 +16,7 @@
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
 Changelog:
+    20220118: added dc_offset parameter (KvG/AS)
     20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
     20171116: fix scipy version 1.0
     20161220: removed class variables; removed testing stuff
@@ -41,7 +42,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidan distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20200508'
+__version__ = '20220118'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -103,6 +104,7 @@ class MammoStruct:
         self.unif_pct = -1
         self.snr_hol = -1
         self.unif_rois = [] # xy roi definitions # format: x0,wid, y0,hei
+        self.dc_offset = 0 # DCoffset is a DC offset added to the detector signal and is equal to 50 for Hologic Dimensions and 3Dimensions
 
         # dose ratio
         self.doseratio = -1
@@ -611,7 +613,7 @@ class Mammo_QC:
             maxdev = max(maxdev,abs(cs_mam.means[i]-cs_mam.means[4]))
 
         cs_mam.unif_pct = 100.*maxdev/cs_mam.means[4]
-        cs_mam.snr_hol = cs_mam.means[5]/cs_mam.stdevs[5]
+        cs_mam.snr_hol = (cs_mam.means[5]-cs_mam.dc_offset)/cs_mam.stdevs[5]
         if cs_mam.verbose:
             print("[Uniformity] maxdev="+str(maxdev)+" unif="+str(cs_mam.unif_pct)+" snr="+str(cs_mam.snr_hol))
         error = False

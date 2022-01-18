@@ -13,7 +13,8 @@
         "qc_series": {
             "filters": {},
             "params": {
-                "art_borderpx_lrtb": "0;0;16;16",
+                "art_borderpx_lrtb": "0;4;16;16",
+                "dc_offset": "50",
                 "info": "qc"
             }
         }
@@ -23,7 +24,7 @@
         "author": "Arnold Schilham, UMCU",
         "creator": "generate_config_json.py version 20180912",
         "description": "MG/Flatfield for Hologic Affirm Prone",
-        "version": "20180417"
+        "version": "20220118"
     },
     "info": {
         "acqdatetime": {
@@ -34,7 +35,8 @@
         },
         "qc_series": {
             "params": {
-                "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image"
+                "art_borderpx_lrtb": "skip this number of pixels in artefact evaluation for left, right, top, bottom of image",
+                "dc_offset": "DC offset correction for SNR calculation"
             }
         }
     }

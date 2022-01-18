@@ -20,6 +20,7 @@
 # 
 #
 # Changelog:
+#   20220118: added dc_offset parameter (KvG/AS)
 #   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
 #   20200401: made some dicom values floats
 #   20190426: Fix for matplotlib>3
@@ -30,7 +31,7 @@
 #
 # ./QCMammo_wadwrapper.py -c Config/mg_hologic_selenia_series.json -d TestSet/StudySelenia -r results_selenia.json
 
-__version__ = '20200508'
+__version__ = '20220118'
 __author__ = 'aschilham'
 
 import os
@@ -78,6 +79,12 @@ def _setRunParams(cs, params):
         raise ValueError(logTag()+" Malformed parameter definition!"+str(e))
 
     cs.art_borderpx_lrtb = art_borderpx_lrtb
+
+    try:
+        dc_offset = int(params['dc_offset'])
+    except:
+        dc_offset = 0	
+    cs.dc_offset = dc_offset
 
 ##### Series wrappers
 def qc_series(data, results, action):
