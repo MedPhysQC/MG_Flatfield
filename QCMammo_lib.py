@@ -16,6 +16,7 @@
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
 Changelog:
+    20230906: fix for Pillow 10.0.0
     20220118: added dc_offset parameter (KvG/AS)
     20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
     20171116: fix scipy version 1.0
@@ -42,7 +43,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidan distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20220118'
+__version__ = '20230906'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -1181,5 +1182,10 @@ class Mammo_QC:
         imsi = im.size
         if max(imsi)>2048:
             ratio = 2048./max(imsi)
-            im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.ANTIALIAS)
+            try:
+                im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.ANTIALIAS)
+            except AttributeError as e:
+                # PIL 10.0.0 deprecates ANTIALIAS
+                im = im.resize( (int(imsi[0]*ratio+.5), int(imsi[1]*ratio+.5)),Image.Resampling.LANCZOS)
+                
         im.save(fname)
