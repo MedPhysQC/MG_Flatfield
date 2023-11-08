@@ -16,6 +16,7 @@
 Warning: THIS MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
 
 Changelog:
+    20231108: fix for small clustersize giving negative ellipse size; added thumbnail of normal; added Cu filter
     20230906: fix for Pillow 10.0.0
     20220118: added dc_offset parameter (KvG/AS)
     20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
@@ -43,7 +44,7 @@ Changelog:
     20131010: FFU calc of rad10 and rad20 by Euclidan distance transform
     20131009: Finished SNR; finished ArtLevel; finish FloodField Uniformity
 """
-__version__ = '20230906'
+__version__ = '20231108'
 __author__ = 'aschilham'
 
 import numpy as np
@@ -116,7 +117,9 @@ class MammoStruct:
         self.art_borderpx_lrtb = [0, 0, 0, 0] # for selenia there is a part of the image that should be ignored
         self.art_threshold = -1
         self.art_rois = [] # x0,y0,rad
-
+        self.art_x0 = 0 # offset to add to art_rois
+        self.art_y0 = 0 # offset to add to art_rois
+        
         # working with a smaller FOV
         self.expertmode = False
         self.expert_roipts = []
@@ -629,6 +632,10 @@ class Mammo_QC:
         of breast of compressed thickness t is D(R-t) = D(R) . [R/(R-t)]^2 . exp[mu.t]
         Next, the Dose will be scaled by uAs. This all results in something which is not entirely correct, but gives
         a good predictor of the dose settings.
+        
+        Calculate:
+          relR2 = (SID/(SID-thick))^2
+          fit ln(entdose/muAs)/relR2 vs thick
         """
         error = True
         # add EntranceDose info
@@ -695,6 +702,11 @@ class Mammo_QC:
             slope  = 0.0272018880924507
             offset = -9.738774100294515
             cs_mam.filtername = "AG"
+        elif filt == "COPPER":
+            # for Hologic Dimensions
+            slope  = 0.03461928744081631
+            offset = -11.68460761403327
+            cs_mam.filtername = "CU"
         else:
             print("[DoseRatio] Error! Unknown filtermaterial "+(filt))
             cs_mam.doseratio = -1
@@ -915,6 +927,8 @@ class Mammo_QC:
             field_max_y_px = cs_mam.expert_roipts[3]
 
         pdCopy =  cs_mam.pixeldataIn[field_min_x_px:field_max_x_px,field_min_y_px:field_max_y_px]
+        cs_mam.art_x0 = field_min_x_px
+        cs_mam.art_x0 = field_min_y_px
 
         if cs_mam.scannername == lit.stL50:
             # Apart from spots, we also see lines appearing as large artefacts.
@@ -1156,10 +1170,10 @@ class Mammo_QC:
 
     def drawThickCircle(self,draw,x,y,rad,color,thick):
         for t in range(-int((thick-1)/2),int((thick+1)/2)):
-            r1 = rad+t
+            r1 = max(0, rad+t)
             draw.ellipse((x-r1,y-r1,x+r1,y+r1), outline=color)
 
-    def saveAnnotatedArtefactImage(self,cs,fname):
+    def saveAnnotatedImage(self,cs,fname,what="artefact"):
         # make a palette, mapping intensities to greyscale
         pal = np.arange(0,256,1,dtype=np.uint8)[:,np.newaxis] * \
             np.ones((3,),dtype=np.uint8)[np.newaxis,:]
@@ -1167,13 +1181,36 @@ class Mammo_QC:
         pal[0] = [255,0,0]
 
         # convert to 8-bit palette mapped image with lowest palette value used = 1
-        im = toimage(cs.art_image.transpose(),low=1,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+        if what == "artefacts":
+            im = toimage(cs.art_image.transpose(),low=1,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+            x0, y0 = 0,0
 
+        elif what == "uniformity":
+            # first the base image
+            # remove bk trend
+            wid,hei = np.shape(cs.pixeldataIn)
+            wid = int(wid/3)
+            hei = int(hei/3)
+            pdCopy = cs.pixeldataIn.copy()
+            mean = np.mean(cs.pixeldataIn[wid:2*wid:3, hei:2*hei:3])
+            std  = np.std(cs.pixeldataIn[wid:2*wid:3, hei:2*hei:3])
+            pdCopy = (cs.pixeldataIn-mean)/std
+            cut = 2
+            mask = pdCopy<-cut
+            pdCopy[mask] = -cut
+            mask = pdCopy>cut
+            pdCopy[mask] = cut
+
+            #im = toimage(cs.pixeldataIn.transpose(),low=1,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+            im = toimage(pdCopy.transpose(),low=1,pal=pal) # MODULE EXPECTS PYQTGRAPH DATA: X AND Y ARE TRANSPOSED!
+            x0,y0 = cs.art_y0, cs.art_x0
+            
         # now draw all rois in reserved color
         if len(cs.art_rois) > 0:
             draw = ImageDraw.Draw(im)
             for xyr in cs.art_rois:
-                self.drawThickCircle(draw, xyr[0],xyr[1], rad=xyr[2],color=0,thick=5)
+                r = max([1,xyr[2]])
+                self.drawThickCircle(draw, xyr[0]+x0,xyr[1]+y0, rad=r,color=0,thick=5)
             del draw
 
         # convert to RGB for JPG, cause JPG doesn't do PALETTE and PNG is much larger

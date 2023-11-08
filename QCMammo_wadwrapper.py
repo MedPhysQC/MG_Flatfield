@@ -20,6 +20,7 @@
 # 
 #
 # Changelog:
+#   20231108: fix for small clustersize giving negative ellipse size; added thumbnail of normal; added Cu filter
 #   20230906: remove deprecated warning; Pillow 10.0.0
 #   20220118: added dc_offset parameter (KvG/AS)
 #   20200508: dropping support for python2; dropping support for WAD-QC 1; toimage no longer exists in scipy.misc
@@ -32,7 +33,7 @@
 #
 # ./QCMammo_wadwrapper.py -c Config/mg_hologic_selenia_series.json -d TestSet/StudySelenia -r results_selenia.json
 
-__version__ = '20230906'
+__version__ = '20231108'
 __author__ = 'aschilham'
 
 import os
@@ -217,11 +218,17 @@ def qc_series(data, results, action):
 
 
     ## 6. Build artefact picture thumbnail
-    filename = 'test.jpg' # Use jpg if a thumbnail is desired
+    filename = 'test_artefacts.jpg' # Use jpg if a thumbnail is desired
 
     #object_naam_pad = outputfile.replace('result.xml','test'+idname+'.jpg') # Use jpg if a thumbnail is desired
-    qcmammolib.saveAnnotatedArtefactImage(cs_mam, filename)
+    qcmammolib.saveAnnotatedImage(cs_mam, filename, 'artefacts')
     varname = 'ArtefactImage'
+    results.addObject(varname, filename)
+
+    ## also add uniformity thumbnail
+    filename = 'test_uniformity.jpg' # Use jpg if a thumbnail is desired
+    qcmammolib.saveAnnotatedImage(cs_mam, filename, 'uniformity')
+    varname = 'UniformityImage'
     results.addObject(varname, filename)
 
 def acqdatetime_series(data, results, action):
